@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+        <title>测试</title>
+    </head>
+    <body>
+        <div id="container" style="width: 800px;height:400px;"></div>
+
+
+        <script>
+        // 获取json数据
+        data = $.getJSON("http://127.0.0.1:8888", function(json) {
+            //console.log(json.open);
+            bb = json.open
+            var time_list = [];
+            var data_list = [];
+            for (var key in bb) {
+                //console.log("key=", key, " value=", bb[key]);
+                time_list.push(key),data_list.push(bb[key]);
+            }
+            //console.log(time_list);
+            //console.log(data_list);
+            // 图像配置
+            var options = {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'Fruit Consumption'
+                },
+                xAxis: {
+                    categories: time_list
+                },
+                yAxis: {
+                    title: {
+                        text: 'Fruit eaten'
+                    }
+                },
+                series: [{
+                    name: '开盘价',
+                    data: data_list
+                }, ]
+                };
+    var chart = Highcharts.chart('container', options);
+            //$("#data").load("http://127.0.0.1:8888");
+        });
+
+
+
+
+
+        </script>
+    </body>
+</html>
