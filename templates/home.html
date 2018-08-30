@@ -8,28 +8,57 @@
     </head>
     <body>
         <div id="container" style="width: 800px;height:400px;"></div>
+        <script>
 
+        </script>
 
         <script>
         // 获取json数据
         data = $.getJSON("http://127.0.0.1:8888", function(json) {
-            //console.log(json.open);
-            bb = json.open
+            // 时间列表
+            time = json.date
             var time_list = [];
-            var data_list = [];
-            for (var key in bb) {
+            for (var key in time) {
                 //console.log("key=", key, " value=", bb[key]);
-                time_list.push(key),data_list.push(bb[key]);
-            }
-            //console.log(time_list);
-            //console.log(data_list);
+                time_list.push(time[key]);
+            };
+            // 开盘价列表
+            open = json.open;
+            var open_list = [];
+            for (var key in open) {
+                //console.log("key=", key, " value=", bb[key]);
+                open_list.push(open[key]);
+            };
+            close = json.close;
+            var close_list = [];
+            for (var key in close) {
+                //console.log("key=", key, " value=", bb[key]);
+                close_list.push(close[key]);
+            };
+            // 股票代码
+            stock_code = json.code;
+            var stock_code = stock_code[0];
+
+            //股票详情信息
+
+            stock_detail = $.getJSON('static/data/detail.json',function(detail){
+                // 股票名称
+                stock_name = detail.name[stock_code]
+                console.log(stock_name);
+                stock_industry = detail.industry[stock_code];
+                console.log(stock_industry);
+            });
+
+
+
             // 图像配置
             var options = {
                 chart: {
-                    type: 'line'
+                    type: 'line',
+                    //colors: ['#7cb5ec',]
                 },
                 title: {
-                    text: 'Fruit Consumption'
+                    text: stock_code
                 },
                 xAxis: {
                     categories: time_list
@@ -40,9 +69,15 @@
                     }
                 },
                 series: [{
-                    name: '开盘价',
-                    data: data_list
-                }, ]
+                name: '收盘价',
+                data: close_list,
+
+                },{
+                name: '开盘价',
+                data: open_list,
+
+
+                },]
                 };
     var chart = Highcharts.chart('container', options);
             //$("#data").load("http://127.0.0.1:8888");
