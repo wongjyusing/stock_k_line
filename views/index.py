@@ -7,7 +7,14 @@ import tushare as ts
 # 图像化处理方法
 class ReadData(RequestHandler):
     def get(self):
-        self.render('home.html')
+        self.render('range.html')
+
+class ReadKLine(RequestHandler):
+    def get(self):
+        self.render('range_k_line.html')
+
+
+
 
 
 # k线数据，包含历史数据查询 但不包含复权信息

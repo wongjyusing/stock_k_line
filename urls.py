@@ -5,5 +5,5 @@ urlpatterns = [
     (r'/read',index.ReadData),
     (r'/today',index.TodayData),
     (r'/todaylist',index.TodayListData),
-
+    (r'/range_k_line',index.ReadKLine),
 ]
