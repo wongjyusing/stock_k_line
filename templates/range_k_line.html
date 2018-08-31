@@ -15,18 +15,57 @@
         </div>
         <script>
         // 获取json数据
+        function strToJson(str){
+             var json = eval('(' + str + ')');
+             return json;
+        };
 
 
+
+
+
+$(document).ready(function(){
+    $.ajax({
+        type:'GET',
+        url:'http://127.0.0.1:8888',
+        dataType:'json',
+        async:false,
+        complete:function(coordinates){
+            result = coordinates.responseText;
+
+        }
+    });
+    json = strToJson(result);
+    //alert(typeof(json));
+    //console.log(json);
+    open = json.date;
+    var open_list = [];
+    for (var key in open) {
+        console.log("key=", key, " value=", open[key]);
+        open_list.push(open[key]);
+    };
+});
+
+            //console.log(eval(json.complete[""[[Scopes]]""][2].data));
+
+                /*
         jsom = $.getJSON('http://127.0.0.1:8888',).done(function(response) {
             //console.log(response); //here's your response
             //alert(typeof(response));
-            console.log(response.responseText);
-            return response.responseText;
+            //console.log(response.responseText);
+            var json = eval(response.responseText);
+            return json;
                 });
 
-        console.log(jsom);
-        //alert(typeof(jsom));
+        console.log(eval(jsom.responseText));
+        alert(typeof(jsom));
 
+
+        $.getJSON('http://127.0.0.1:8888',function(json){
+            window.myarray = json.responseText;
+            bb = window.myarray;
+        });
+        console.log(bb);
         time = json.date;
         console.log(time);
         time_list = [];
@@ -88,7 +127,7 @@
         });
 // 范围控制图像配置
 
-
+*/
 
         </script>
     </body>
