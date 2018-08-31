@@ -15,215 +15,80 @@
         </div>
         <script>
         // 获取json数据
-         $.getJSON("http://127.0.0.1:8888", function(json){
-            // 时间列表
-            time = json.date
-            time_list = [];
-            for (var key in time) {
-                //console.log("key=", key, " value=", bb[key]);
-                time_list.push(time[key]);
-            };
-            // 开盘价列表
-            open = json.open;
-            var open_list = [];
-            for (var key in open) {
-                //console.log("key=", key, " value=", bb[key]);
-                open_list.push(open[key]);
-            };
-            // 收盘价格列表
-            close = json.close;
-            var close_list = [];
-            for (var key in close) {
-                //console.log("key=", key, " value=", bb[key]);
-                close_list.push(close[key]);
-            };
-            // 最高价格列表
-            high = json.high;
-            var high_list = [];
-            for (var key in high) {
-                //console.log("key=", key, " value=", bb[key]);
-                high_list.push(high[key]);
-            };
-            // 最低价列表
-            low = json.low;
-            var low_list = [];
-            for (var key in low) {
-                //console.log("key=", key, " value=", bb[key]);
-                low_list.push(low[key]);
-            };
-
-            // 成交量列表
-            volume = json.volume;
-            var volume_list = [];
-            for (var key in volume) {
-                //console.log("key=", key, " value=", bb[key]);
-                volume_list.push(volume[key]);
-            };
 
 
-
-            // 股票代码
-            stock_code = json.code;
-            var stock_code = stock_code[0];
-
-            // 股票详情信息
-            stock_detail = $.getJSON('static/data/detail.json',function(detail){
-                // 股票名称
-                stock_name = detail.name[stock_code]
-                console.log(stock_name);
-                stock_industry = detail.industry[stock_code];
-                console.log(stock_industry);
-            });
-
-            // 选择器配置
-            detail = document.getElementById('#detail');
-            rangeDetail = document.getElementById('#rangeDetail');
-
-            // 详情图像配置
-            var detailData = time_list;
-            var options = {
-                chart: {
-                    type: 'line',
-                    //colors: ['#7cb5ec',]
-                },
-                title: {
-                    text: stock_code
-                },
-                xAxis: {
-                    categories: time_list
-                },
-                yAxis: {
-                    title: {
-                        text: 'Fruit eaten'
-                    }
-                },
-                series: [{
-                name: '收盘价',
-                data: close_list,
-
-                }]
-                };
-            var chart = Highcharts.chart('detail', options);
-                    //$("#data").load("http://127.0.0.1:8888");
-                    function createRangeDetail() {
-                        return Highcharts.chart(rangeDetail,{
-                            chart: {
-                                events:{
-                                    selection:function (event) {
-                                        var selectObject = event.xAxis[0],
-                                            min = selectObject.min,
-                                            max = selectObject.max,
-                                            detailData = [],
-                                            xAxis = this.xAxis[0];
-                                            Highcharts.each(this.series[0].data, function(d) {
-                                                    if(d.x > min && d.x < max) {
-                                                            detailData.push([d.x, d.y]);
-                                                    }
-                                            });
-                                        // 当选择了时间跨度后，改变详情页面数据并让选择器改变颜色
-                                        xAxis.removePlotBand('mask-before');
-                                        xAxis.addPlotBand({
-                                                id: 'mask-before',
-                                                from: time_list[0],
-                                                to: min,
-                                                color: 'rgba(0, 0, 0, 0.2)'
-                                        });
-                                        xAxis.removePlotBand('mask-after');
-                                        xAxis.addPlotBand({
-                                                id: 'mask-after',
-                                                from: max,
-                                                to: time_list[70],
-                                                color: 'rgba(0, 0, 0, 0.2)'
-                                        });
-                                        detail.series[0].setData(detailData);
-                                        return false;
-                                    }
-                                },
-                            },
-                            title: {
-                                    text: null
-                            },
-
-                            xAxis: {
-                                    type: 'datetime',
-                                    showLastTickLabel: true,
-                                    maxZoom: 14 * 24 * 3600000, // fourteen days
-                                    plotBands: [{
-                                            id: 'mask-before',
-                                            from: time_list[0],
-                                            to: time_list[70],
-                                            color: 'rgba(0, 0, 0, 0.2)'
-                                    }],
-                                    title: {
-                                            text: null
-                                    }
-                            },
-                            yAxis: {
-                                    gridLineWidth: 0,
-                                    labels: {
-                                            enabled: false
-                                    },
-                                    title: {
-                                            text: null
-                                    },
-                                    min: 0.6,
-                                    showFirstLabel: false
-                            },
-                            tooltip: {
-                                    formatter: function () {
-                                            return false;
-                                    }
-                            },
-                            legend: {
-                                    enabled: false
-                            },
-                            credits: {
-                                    enabled: false
-                            },
-                            plotOptions: {
-                                    series: {
-                                            fillColor: {
-                                                    linearGradient: [0, 0, 0, 70],
-                                                    stops: [
-                                                            [0, Highcharts.getOptions().colors[0]],
-                                                            [1, 'rgba(255,255,255,0)']
-                                                    ]
-                                            },
-                                            lineWidth: 1,
-                                            marker: {
-                                                    enabled: false
-                                            },
-                                            shadow: false,
-                                            states: {
-                                                    hover: {
-                                                            lineWidth: 1
-                                                    }
-                                            },
-                                            enableMouseTracking: false
-                                    }
-                            },
-                            series: [{
-                                    type: 'area',
-                                    name: 'USD to EUR',
-                                    pointInterval: 24 * 3600 * 1000,
-                                    pointStart: time_list[0],
-                                    data: volume_list
-                            }],
-                            exporting: {
-                                    enabled: false
-                                }
-                        },function (detail) {
-                                createRangeDetail(detail);
-
-                        });
-
-                    }
-
+        jsom = $.getJSON('http://127.0.0.1:8888',).done(function(response) {
+            //console.log(response); //here's your response
+            //alert(typeof(response));
+            console.log(response.responseText);
+            return response.responseText;
                 });
+
+        console.log(jsom);
+        //alert(typeof(jsom));
+
+        time = json.date;
+        console.log(time);
+        time_list = [];
+        for (var key in time) {
+            //console.log("key=", key, " value=", bb[key]);
+            time_list.push(time[key]);
+        };
+        // 开盘价列表
+        open = json.open;
+        var open_list = [];
+        for (var key in open) {
+            //console.log("key=", key, " value=", bb[key]);
+            open_list.push(open[key]);
+        };
+        // 收盘价格列表
+        close = json.close;
+        var close_list = [];
+        for (var key in close) {
+            //console.log("key=", key, " value=", bb[key]);
+            close_list.push(close[key]);
+        };
+        // 最高价格列表
+        high = json.high;
+        var high_list = [];
+        for (var key in high) {
+            //console.log("key=", key, " value=", bb[key]);
+            high_list.push(high[key]);
+        };
+        // 最低价列表
+        low = json.low;
+        var low_list = [];
+        for (var key in low) {
+            //console.log("key=", key, " value=", bb[key]);
+            low_list.push(low[key]);
+        };
+
+        // 成交量列表
+        volume = json.volume;
+        var volume_list = [];
+        for (var key in volume) {
+            //console.log("key=", key, " value=", bb[key]);
+            volume_list.push(volume[key]);
+        };
+
+
+
+        // 股票代码
+        stock_code = json.code;
+        console.log(stock_code);
+        var stock_code = stock_code[0];
+
+        // 股票详情信息
+        stock_detail = $.getJSON('static/data/detail.json',function(detail){
+            // 股票名称
+            stock_name = detail.name[stock_code]
+            console.log(stock_name);
+            stock_industry = detail.industry[stock_code];
+            console.log(stock_industry);
+        });
 // 范围控制图像配置
 
 
-            //$("#data").load("http://127.0.0.1:8888");
 
         </script>
     </body>
