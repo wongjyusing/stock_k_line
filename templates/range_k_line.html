@@ -7,127 +7,95 @@
         <title>haha</title>
     </head>
     <body>
-        <div id="detail">
-
-        </div>
-        <div id="rangeDetail">
-
-        </div>
+        <div id="site-container" style="min-width:400px;height:400px;position: relative"></div>
         <script>
         // 获取json数据
-        function strToJson(str){
-             var json = eval('(' + str + ')');
-             return json;
+        var json = (function() {
+            var result;
+            $.ajax({
+                type:'GET',
+                url:'http://127.0.0.1:8888',
+                dataType:'json',
+                async:false,
+                success:function(data){
+                    result = data;
+                }
+            });
+            return result;
+        })();
+
+        // 股票代码
+        stock_code = json.code[0]
+        // 时间
+        stock_time = json.date;
+        var stock_time_list = [];
+        for (var key in stock_time) {
+            stock_time_list.push(stock_time[key]);
         };
-
-
-
-
-
-$(document).ready(function(){
-    $.ajax({
-        type:'GET',
-        url:'http://127.0.0.1:8888',
-        dataType:'json',
-        async:false,
-        complete:function(coordinates){
-            result = coordinates.responseText;
-
-        }
-    });
-    json = strToJson(result);
-    //alert(typeof(json));
-    //console.log(json);
-    open = json.date;
-    var open_list = [];
-    for (var key in open) {
-        console.log("key=", key, " value=", open[key]);
-        open_list.push(open[key]);
-    };
-});
-
-            //console.log(eval(json.complete[""[[Scopes]]""][2].data));
-
-                /*
-        jsom = $.getJSON('http://127.0.0.1:8888',).done(function(response) {
-            //console.log(response); //here's your response
-            //alert(typeof(response));
-            //console.log(response.responseText);
-            var json = eval(response.responseText);
-            return json;
-                });
-
-        console.log(eval(jsom.responseText));
-        alert(typeof(jsom));
-
-
-        $.getJSON('http://127.0.0.1:8888',function(json){
-            window.myarray = json.responseText;
-            bb = window.myarray;
-        });
-        console.log(bb);
-        time = json.date;
-        console.log(time);
-        time_list = [];
-        for (var key in time) {
-            //console.log("key=", key, " value=", bb[key]);
-            time_list.push(time[key]);
-        };
-        // 开盘价列表
+        // 开盘价格
         open = json.open;
         var open_list = [];
         for (var key in open) {
-            //console.log("key=", key, " value=", bb[key]);
             open_list.push(open[key]);
         };
-        // 收盘价格列表
+        // 收盘价格
         close = json.close;
         var close_list = [];
         for (var key in close) {
-            //console.log("key=", key, " value=", bb[key]);
             close_list.push(close[key]);
         };
-        // 最高价格列表
+        // 最高价
         high = json.high;
         var high_list = [];
         for (var key in high) {
-            //console.log("key=", key, " value=", bb[key]);
             high_list.push(high[key]);
         };
-        // 最低价列表
+        // 最低价
         low = json.low;
         var low_list = [];
         for (var key in low) {
-            //console.log("key=", key, " value=", bb[key]);
             low_list.push(low[key]);
         };
-
-        // 成交量列表
+        // 交易量
+        low = json.low;
+        var low_list = [];
+        for (var key in low) {
+            low_list.push(low[key]);
+        };
         volume = json.volume;
-        var volume_list = [];
+        var volume = [];
         for (var key in volume) {
-            //console.log("key=", key, " value=", bb[key]);
             volume_list.push(volume[key]);
         };
 
+        // 股票详细数据获取
+        var stock_detail = (function() {
+            var result;
+            $.ajax({
+                type:'GET',
+                url:'static/data/detail.json',
+                dataType:'json',
+                async:false,
+                success:function(data){
+                    result = data;
+                }
+            });
+            return result;
+        })();
+        // 公司名称
+        stock_name = stock_detail.name[stock_code]
+        console.log(stock_name);
+        // 股票公司地址,详情信息获取的键名在get_stock_detail.py文件中
+        // 留坑 还有公司官网，财务情况的信息尚未获取
+        // 后续优化再进行获取
+
+        // 开始绘图
 
 
-        // 股票代码
-        stock_code = json.code;
-        console.log(stock_code);
-        var stock_code = stock_code[0];
 
-        // 股票详情信息
-        stock_detail = $.getJSON('static/data/detail.json',function(detail){
-            // 股票名称
-            stock_name = detail.name[stock_code]
-            console.log(stock_name);
-            stock_industry = detail.industry[stock_code];
-            console.log(stock_industry);
-        });
-// 范围控制图像配置
 
-*/
+
+
 
         </script>
     </body>
