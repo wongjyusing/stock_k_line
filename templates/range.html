@@ -132,11 +132,13 @@
 function createDetail(masterChart) {
     var detailData = [],
             detailStart = Date.UTC(2008, 7, 1);
+
     Highcharts.each(masterChart.series[0].data, function(d) {
             if(d.x >= detailStart) {
                     detailData.push(d.y);
             }
     });
+
     detailChart = Highcharts.chart(detailContainer, {
             chart: {
                     marginBottom: 120,
@@ -198,6 +200,8 @@ function createDetail(masterChart) {
             }],
     });
 }
+
+
 // 创建导航图
 function createMaster() {
     return Highcharts.chart(masterContainer, {

@@ -8,8 +8,9 @@
     </head>
     <body>
         <div id="site-container" style="min-width:400px;height:400px;position: relative"></div>
+        <div id="site-master" style="min-width:400px;height:200px;position: relative;"></div>
         <script>
-        // 获取json数据
+        // 获取股票json数据
         var json = (function() {
             var result;
             $.ajax({
@@ -63,7 +64,7 @@
             low_list.push(low[key]);
         };
         volume = json.volume;
-        var volume = [];
+        var volume_list = [];
         for (var key in volume) {
             volume_list.push(volume[key]);
         };
@@ -89,12 +90,68 @@
         // 留坑 还有公司官网，财务情况的信息尚未获取
         // 后续优化再进行获取
 
-        // 开始绘图
+// 绘制详情图函数，后期由控制函数填写开始值和结束值
+function createDetail(start_num,end_num) {
+    // 开始绘图
+
+    var options = {
+        chart: {
+            type: 'line',
+            //colors: ['#7cb5ec',]
+        },
+        title: {
+            text: stock_code
+        },
+        xAxis: {
+            categories: stock_time_list.slice(0,-1)
+        },
+        yAxis: {
+            title: {
+                text: 'Fruit eaten'
+            }
+        },
+        series: [{
+        name: '开盘价',
+        data: open_list.slice(0,-1),
+
+
+        },]
+        };
+var chart = Highcharts.chart('site-container', options);
+}
+
+function createMaster(start_num,end_num) {
+    // 开始绘图
+
+    var options = {
+        chart: {
+            type: 'column',
+            //colors: ['#7cb5ec',]
+        },
+        title: {
+            text: stock_code
+        },
+        xAxis: {
+            categories: stock_time_list
+        },
+        yAxis: {
+            title: {
+                text: 'Fruit eaten'
+            }
+        },
+        series: [{
+        name: '交易量',
+        data: volume_list
+
+        },]
+        };
+        Highcharts.chart('site-master', options);
+}
 
 
 
-
-
+createDetail();
+createMaster();
 
 
         </script>

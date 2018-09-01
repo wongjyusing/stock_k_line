@@ -20,7 +20,8 @@ class ReadKLine(RequestHandler):
 # k线数据，包含历史数据查询 但不包含复权信息
 class MainHandler(RequestHandler):
     def get(self):
-        content = ts.get_k_data('000007', ktype='60',).to_json(force_ascii=False)
+        content = ts.get_k_data('000007', ktype='D',start='2018-01-01',end=
+        '2018-0901').to_json(force_ascii=False)
         self.write(content)
 
 
