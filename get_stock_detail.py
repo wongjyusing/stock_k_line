@@ -1,6 +1,7 @@
 import tushare as ts
 
 content = ts.get_stock_basics().to_json('static/data/detail.json',force_ascii=False)
+#content = ts.get_k_data('000007', ktype='D',start='2018-01-01',end='2018-0901').to_json('data.json',force_ascii=False,)
 
 '''
 code ,股票代码
@@ -26,4 +27,4 @@ profit,利润同比(%)
 gpr,毛利率(%)
 npr,净利润率(%)
 holders,股东人数
-```
+'''
