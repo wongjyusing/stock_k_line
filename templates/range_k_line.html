@@ -26,7 +26,15 @@
         })();
 
         // 股票代码
-        stock_code = json.code[0]
+        stock_code = json.code[0];
+
+        // 蜡烛图数据列表
+        candleChart = [];
+        for (var key in json) {
+            console.log(key)
+            //candleChart.push(json[key]);
+        };
+
         // 时间
         stock_time = json.date;
         var stock_time_list = [];
